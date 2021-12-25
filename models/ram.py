@@ -8,9 +8,6 @@ class RamModel(BaseModel):
         self.time = None
         self.fields = None
 
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
-            sort_keys=True, indent=4)
 
 class RamFields:
     def __init__(self, total, available, percent, cached):
@@ -18,4 +15,7 @@ class RamFields:
         self.available = available
         self.percent = percent
         self.cached = cached
+
+    
+
 
