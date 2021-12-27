@@ -8,4 +8,7 @@ for i in psutil.disk_partitions():
                             'total':psutil.disk_usage(i.mountpoint).total,
                             'free':psutil.disk_usage(i.mountpoint).free,
                             'used':psutil.disk_usage(i.mountpoint).used}
-print(disks)
+# print(disks)
+
+pids = psutil.pids()
+print(len(pids))

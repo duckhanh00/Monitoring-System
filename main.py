@@ -1,6 +1,6 @@
 import threading
 from prometheus.registry import Registry
-from services.prometheus import gather_data
+from services.gather_data import gather_data
 from prometheus.exporter import PrometheusMetricHandler
 from http.server import HTTPServer
 
