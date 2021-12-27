@@ -14,7 +14,7 @@ from config.influxdb import InfluxDB
 
 from models.ram import RamModel, RamFields
 from models.cpu import CPUModel, CPUFields
-
+from models.disk import DiskModel, DiskFields
 def gather_data(registry):
     influxdb = InfluxDB()
     
@@ -23,24 +23,25 @@ def gather_data(registry):
 
     # Get the host name of the machine
     host = socket.gethostname()
-    local_ip = socket. gethostbyname(host)
+    local_ip = socket.gethostbyname(host)
 
     # Create our collectors
     ram_metric = Gauge("memory_usage_bytes", "Memory usage in bytes.",
                        {'host': host})
     cpu_metric = Gauge("cpu_usage_percent", "CPU usage percent.",
                        {'host': host})
-
+    disk_metric = Gauge("disk_usage_percent", "disk usage percent", 
+                        {'host': host})
     # register the metric collectors
     registry.register(ram_metric)
     registry.register(cpu_metric)
+    registry.register(disk_metric)
 
     # Start gathering metrics every second
     while True:
-        time.sleep(1)
         json_body = []
         current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
+        print(current_time)
         # Add ram metrics
         ram = psutil.virtual_memory()
         swap = psutil.swap_memory()
@@ -56,10 +57,13 @@ def gather_data(registry):
         cpu_node.fields = CPUFields(percent=cpu_percent)
         json_body.append(cpu_node.class_to_json())
 
-        # Add cpu metrics
-        # for c, p in enumerate(psutil.cpu_percent(interval=1, percpu=True)):
-        #     print("cpu", c, p)
-        #     cpu_metric.set({'core': c}, p)
+        disks = {}
+        for i in psutil.disk_partitions():
+            disks[i.mountpoint] = psutil.disk_usage(i.mountpoint).percent
+        disk_node = DiskModel(host=host, ip=local_ip)
+        disk_node.time = current_time
+        disk_node.fields = disks
+        json_body.append(disk_node.disk())
 
         print(json_body)
         influxdb.client.write_points(json_body)
