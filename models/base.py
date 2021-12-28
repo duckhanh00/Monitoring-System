@@ -36,6 +36,9 @@ class RamFields:
         self.cached = cached
 
 class DiskFields:
+    def __init__(self):
+        self.total = 0
+        
     def set_mount_point(self, mount_point, total, percent):
         self.__dict__[mount_point + "_total"] = total
         self.__dict__[mount_point + "_percent"] = percent

@@ -40,7 +40,8 @@ class StatisticService:
         self.node.fields = DiskFields()
         for i in psutil.disk_partitions():
             disk_usage = psutil.disk_usage(i.mountpoint)
-            print("77777",i.mountpoint,disk_usage.total, disk_usage.total > Constant.CAPACITY_THRESHOLD)
+            self.node.fields.total += disk_usage.total
+            
             if disk_usage.total > Constant.CAPACITY_THRESHOLD:
                 self.node.fields.set_mount_point(mount_point=i.mountpoint, total=disk_usage.total, percent=disk_usage.percent)
 
