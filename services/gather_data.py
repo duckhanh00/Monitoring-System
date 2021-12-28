@@ -46,6 +46,5 @@ def gather_data(registry):
         disk_node = statistic_service.statistic_disk(current_time, "disk")
         json_body.append(disk_node.class_to_json())
 
-        print(json_body)
         influxdb.client.write_points(json_body)
     

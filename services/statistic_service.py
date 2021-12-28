@@ -1,5 +1,6 @@
 import psutil
 from models.base import BaseModel, RamFields, ProcessFields, CPUFields, DiskFields
+from config.constants import Constant
 
 class StatisticService:
     def __init__(self, host, ip):
@@ -36,14 +37,11 @@ class StatisticService:
     def statistic_disk(self, time, measurement):
         self.set_time_and_measurement(time=time, measurement=measurement)
 
-        disk_used = 0
-        disk_total = 0
+        self.node.fields = DiskFields()
         for i in psutil.disk_partitions():
             disk_usage = psutil.disk_usage(i.mountpoint)
-            disk_used += disk_used + disk_usage.used 
-            disk_total += disk_total + disk_usage.total 
-
-        disk_percent = disk_used / disk_total * 100
-        self.node.fields = DiskFields(percent=disk_percent)
+            print("77777",i.mountpoint,disk_usage.total, disk_usage.total > Constant.CAPACITY_THRESHOLD)
+            if disk_usage.total > Constant.CAPACITY_THRESHOLD:
+                self.node.fields.set_mount_point(mount_point=i.mountpoint, total=disk_usage.total, percent=disk_usage.percent)
 
         return self.node

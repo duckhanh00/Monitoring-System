@@ -4,3 +4,7 @@ class InfluxDBConstant:
     USERNAME = 'admin'
     PASSWORD = '123456'
     DATABASE_MONITORING = 'monitoring_db'
+
+class Constant:
+    CAPACITY_THRESHOLD = 53687091200
+
