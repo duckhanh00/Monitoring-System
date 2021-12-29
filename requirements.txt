@@ -6,7 +6,6 @@ influxdb==5.3.1
 msgpack==1.0.3
 pipreqs==0.4.11
 pkg_resources==0.0.0
-prometheus==0.3.0
 protobuf-py3==2.5.1
 psutil==5.8.0
 python-dateutil==2.8.2

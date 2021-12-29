@@ -11,7 +11,7 @@ from config.influxdb import InfluxDB
 
 from services.statistic_service import StatisticService
 
-def gather_data(registry):
+def gather_data():
     # Get the host name of the machine
     host = socket.gethostname()
     local_ip = socket.gethostbyname(host)
