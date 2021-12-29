@@ -10,5 +10,5 @@ class InfluxDBConstant:
     DATABASE_MONITORING = os.getenv("DATABASE_MONITORING") or 'monitoring_db'
 
 class Constant:
-    CAPACITY_THRESHOLD = 53687091200
+    CAPACITY_THRESHOLD = os.getenv("CAPACITY_THRESHOLD") or 53687091200
 
